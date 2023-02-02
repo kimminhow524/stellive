@@ -1,24 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from "axios";
+import "./assets/css/App.css";
+import { dataAll, getUrlData } from "./assets/js/db";
+import Video from "./assets/js/video";
+import { Modal } from "./popup/Modal";
 
 function App() {
+  let playList = "https://www.youtube.com/watch?v=i_hdQMjibbU";
+  dataAll();
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h4>stelLive</h4>
+        <Video playList={playList}></Video>
       </header>
     </div>
+    //<Modal></Modal>
   );
 }
 

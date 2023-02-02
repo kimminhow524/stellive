@@ -68,3 +68,14 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+# todo
+
+react player 사용o, 구글 엑셀시트 db로 쓰기 -아직
+
+조건 num/userIp/url/key/k or u?
+
+02.02 오늘은 실패했다.
+spread sheet 적용 -> react는 적용 안됨.
+spread best ->1일 최대 100번까지 가능.
+방법은 깃허브 api, litesql이 한계일듯?
