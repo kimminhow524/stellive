@@ -79,3 +79,6 @@ react player 사용o, 구글 엑셀시트 db로 쓰기 -아직
 spread sheet 적용 -> react는 적용 안됨.
 spread best ->1일 최대 100번까지 가능.
 방법은 깃허브 api, litesql이 한계일듯?
+
+02.04 파이어 베이스 연동 완.
+데이터 가져오기 성공.
