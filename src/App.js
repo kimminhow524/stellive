@@ -1,12 +1,10 @@
-import axios from "axios";
 import "./assets/css/App.css";
-import { dataAll, getUrlData } from "./assets/js/db";
-import Video from "./assets/js/video";
-import { Modal } from "./popup/Modal";
+import { readData } from "./common/fireBase";
+import Video from "./common/video";
 
 function App() {
   let playList = "https://www.youtube.com/watch?v=i_hdQMjibbU";
-  dataAll();
+  readData();
   return (
     <div className="App">
       <header className="App-header">

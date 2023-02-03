@@ -1,7 +1,7 @@
 import ReactPlayer from "react-player/lazy";
 
-const Video = ({ playList, index }) => {
-  let player = Math.floor(Math.random() * playList.length);
+const Video = ({ playList }) => {
+  //let player = Math.floor(Math.random() * playList.length);
   return (
     <>
       <div className="player-wrapper">
