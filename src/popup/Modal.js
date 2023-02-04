@@ -1,8 +1,9 @@
 import { async } from "@firebase/util";
 import axios from "axios";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { insertFail, validationUrl } from "../common/common";
 import { db } from "../common/fireBase";
 
 export const Modal = ({ popup, popupOn }) => {
@@ -32,30 +33,26 @@ export const Modal = ({ popup, popupOn }) => {
       confirmButtonText: "완료",
       cancelButtonText: "취소",
       footer: "영상이 아닐경우 ip가 차단될수 있습니다.",
-    }).then(
-      (result) => {
-        if (result.value && result.isConfirmed) {
-          console.log(result.value);
+    }).then((result) => {
+      if (result.value && result.isConfirmed) {
+        if (validationUrl(result?.value?.url)) {
           const params = {
             url: result?.value?.url,
             ip: ip,
             choice: result?.value?.who,
           };
-          setData(params);
+          //  setData(params);
           popupOn(false);
-        } else if (result.isDismissed || result.isDenied) {
+        } else {
           popupOn(false);
+          insertFail(500);
         }
-        // if (!ipCheck(ip)) {
-        //   console.log(result);
-        //  return false;
-        // }
+      } else if (result.isDismissed || result.isDenied) {
+        popupOn(false);
       }
-      /** 1. 유튜브 url이 아닐경우
-       *  3. ip 저장
-       * */
-    );
+    });
   };
+
   const setData = async (params) => {
     try {
       const data = await addDoc(collection(db, "youtube"), params);
@@ -65,23 +62,41 @@ export const Modal = ({ popup, popupOn }) => {
     }
   };
 
-  const blackListCheck = (ip) => {
-    //  ip주소가 차단된 ip일 경우
-    const blackList = [];
-
-    if (blackList.find((el) => el === ip)) {
-      Swal.fire({
-        title: "해당 IP는 영상을 등록할수 없습니다.",
-        icon: "warning",
-        text: "자세한 사항은 문의 바랍니다.",
+  const blackListCheck = async () => {
+    // Create a query against the collection.
+    try {
+      let data = {};
+      const docRef = query(collection(db, "blacklist"), where("ip", "==", ip));
+      const docSnap = await getDocs(docRef);
+      console.log(docSnap);
+      docSnap.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        data = doc.data();
       });
-      return false;
+      console.log(data);
+      if (data) {
+        //blackList
+        console.log("he is black List");
+      } else {
+        console.log("ok");
+      }
+    } catch (e) {
+      console.log(e);
     }
+
     return true;
   };
 
   /*
     db로 보내주는 패턴
     */
-  return <>{inputModal()}</>;
+  return (
+    <>
+      <button
+        onClick={() => {
+          blackListCheck();
+        }}
+      />
+    </>
+  );
 };
