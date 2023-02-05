@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import axios from "axios";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -19,7 +18,7 @@ export const Modal = ({ popup, popupOn }) => {
     Swal.fire({
       title: "추가하고 싶은 영상의 url을 입력하세요.",
       html:
-        '<select id="swal-input2" class="swal2-input" placeholder="url"><option class="swal2-input" value="uni">유니</option><option class="swal2-input" value="kanna">칸나</option></select>' +
+        '<select id="swal-input2" class="swal2-input" placeholder="url"><option class="swal2-input" value="yuni">유니</option><option class="swal2-input" value="kanna">칸나</option></select>' +
         '<input id="swal-input1" class="swal2-input" placeholder="url">',
       preConfirm: function () {
         return new Promise((resolve) => {
@@ -36,17 +35,22 @@ export const Modal = ({ popup, popupOn }) => {
     }).then((result) => {
       if (result.value && result.isConfirmed) {
         if (validationUrl(result?.value?.url)) {
-          const params = {
-            url: result?.value?.url,
-            ip: ip,
-            choice: result?.value?.who,
-          };
-          //  setData(params);
-          popupOn(false);
-        } else {
           popupOn(false);
           insertFail(500);
+          return false;
         }
+        if (!blackListCheck) {
+          popupOn(false);
+          insertFail(401);
+          return false;
+        }
+        const params = {
+          url: result?.value?.url,
+          ip: ip,
+          who: result?.value?.who,
+        };
+        setData(params);
+        popupOn(false);
       } else if (result.isDismissed || result.isDenied) {
         popupOn(false);
       }
@@ -55,10 +59,26 @@ export const Modal = ({ popup, popupOn }) => {
 
   const setData = async (params) => {
     try {
-      const data = await addDoc(collection(db, "youtube"), params);
-      console.log(data.id);
+      await addDoc(collection(db, "youtube"), params);
+
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "center-center",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+
+      Toast.fire({
+        icon: "success",
+        title: `등록이 완료 되었습니다.`,
+      });
     } catch (e) {
-      console.log("fireBase", e);
+      insertFail(400);
     }
   };
 
@@ -68,35 +88,22 @@ export const Modal = ({ popup, popupOn }) => {
       let data = {};
       const docRef = query(collection(db, "blacklist"), where("ip", "==", ip));
       const docSnap = await getDocs(docRef);
-      console.log(docSnap);
       docSnap.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         data = doc.data();
       });
-      console.log(data);
       if (data) {
-        //blackList
-        console.log("he is black List");
+        return false;
       } else {
-        console.log("ok");
+        return true;
       }
     } catch (e) {
-      console.log(e);
+      return false;
     }
-
-    return true;
   };
 
   /*
     db로 보내주는 패턴
     */
-  return (
-    <>
-      <button
-        onClick={() => {
-          blackListCheck();
-        }}
-      />
-    </>
-  );
+  return <>{inputModal()}</>;
 };

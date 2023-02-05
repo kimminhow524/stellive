@@ -3,7 +3,6 @@ import Swal from "sweetalert2";
 export const validationUrl = (value) => {
   const youtubeUrl =
     /(http:|https:)?(\/\/)?(www\.)?(youtube.com|youtu.be)\/(watch|embed)?(\?v=|\/)?(\S+)?/g;
-  console.log("test:", youtubeUrl.test(value));
   return youtubeUrl.test(value);
 };
 
@@ -32,7 +31,7 @@ export const insertFail = (failCode) => {
     },
   });
   Toast.fire({
-    icon: "error",
+    icon: "warning",
     title: toastText,
   });
 };
