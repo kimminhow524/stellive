@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { insertFail, validationUrl } from "../common/common";
 import { db } from "../common/fireBase";
 
-export const Modal = ({ popup, popupOn }) => {
+export const Insert = ({ popup, popupOn }) => {
   const [ip, setIp] = useState();
   //유저 ip 등록
   useEffect(() => {

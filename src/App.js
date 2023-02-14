@@ -1,15 +1,16 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import "./assets/css/App.css";
-import { db } from "./common/fireBase";
-import { Modal } from "./popup/Modal";
 import Video from "./view/video";
+import { db } from "./common/fireBase";
+import "./assets/css/App.css";
+import { Insert } from "./popup/Modal";
+import { Container, Nav, Navbar } from "react-bootstrap";
 
 function App() {
   const [playList, setPlayList] = useState([
-    "https://www.youtube.com/watch?v=w_RcVW8YW4Q",
+    "https://www.youtube.com/watch?v=YJJbVAPTZLg",
   ]);
-  const [member, setMember] = useState(["yuni"]);
+  const [member, setMember] = useState("yuni");
   const [popup, setPopup] = useState(false);
 
   useEffect(() => {
@@ -40,28 +41,34 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <header className={"App-header " + member}>
-        <button
-          onClick={() => {
-            setPopup(true);
-          }}
-        >
-          등록test
-        </button>
-        <button
-          onClick={() => {
-            member === "yuni" ? setMember("kanna") : setMember("yuni");
-          }}
-        >
-          멤버변경test
-        </button>
-        <h4>stelLive</h4>
+    <div className={"App " + member}>
+      <Navbar bg="dark" variant="dark">
+        <Container>
+          <Navbar.Brand href="#home">StelLive</Navbar.Brand>
+          <Nav className="me-auto">
+            <Nav.Link
+              onClick={() => {
+                member === "yuni" ? setMember("kanna") : setMember("yuni");
+              }}
+            >
+              멤버변경
+            </Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                popupOn(true);
+              }}
+            >
+              영상등록
+            </Nav.Link>
+          </Nav>
+        </Container>
+      </Navbar>
+      <Container className="text-center ">
         <Video playList={playList}></Video>
         {popup === true ? (
-          <Modal popup={popup} popupOn={popupOn}></Modal>
+          <Insert popup={popup} popupOn={popupOn}></Insert>
         ) : null}
-      </header>
+      </Container>
     </div>
   );
 }

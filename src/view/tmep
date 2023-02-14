@@ -1,0 +1,73 @@
+
+    <div>
+      <Navbar>
+        <Container>
+          <Navbar.Brand>StelLive</Navbar.Brand>
+          <Navbar.Toggle />
+          <Navbar.Collapse className="justify-content-end">
+            <Nav.Link
+              onClick={() => {
+                setPopup(true);
+              }}
+            >
+              등록
+            </Nav.Link>
+            <Nav.Link
+              eventKey={2}
+              onClick={() => {
+                member === "yuni" ? setMember("kanna") : setMember("yuni");
+              }}
+            >
+              수정
+            </Nav.Link>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      <div className={member}>
+        <Container fluid>
+          <div className="d-flex justify-content-center mt-5">
+            <Video playList={playList}></Video>
+          </div>
+        </Container>
+        {popup === true ? (
+          <Insert popup={popup} popupOn={popupOn}></Insert>
+        ) : null}
+      </div>
+      <Footer></Footer>
+    </div>
+    <div>
+      <Navbar>
+        <Container>
+          <Navbar.Brand>StelLive</Navbar.Brand>
+          <Navbar.Toggle />
+          <Navbar.Collapse className="justify-content-end">
+            <Nav.Link
+              onClick={() => {
+                setPopup(true);
+              }}
+            >
+              등록
+            </Nav.Link>
+            <Nav.Link
+              eventKey={2}
+              onClick={() => {
+                member === "yuni" ? setMember("kanna") : setMember("yuni");
+              }}
+            >
+              수정
+            </Nav.Link>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      <div className={member}>
+        <Container fluid>
+          <div className="d-flex justify-content-center mt-5">
+            <Video playList={playList}></Video>
+          </div>
+        </Container>
+        {popup === true ? (
+          <Insert popup={popup} popupOn={popupOn}></Insert>
+        ) : null}
+      </div>
+      <Footer></Footer>
+    </div>
