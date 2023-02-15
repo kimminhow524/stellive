@@ -5,6 +5,7 @@ import { db } from "./common/fireBase";
 import "./assets/css/App.css";
 import { Insert } from "./popup/Modal";
 import { Container, Nav, Navbar } from "react-bootstrap";
+import YoutubePlayer from "./view/youtube";
 
 function App() {
   const [playList, setPlayList] = useState([
@@ -64,7 +65,7 @@ function App() {
         </Container>
       </Navbar>
       <Container className="text-center ">
-        <Video playList={playList}></Video>
+        <YoutubePlayer></YoutubePlayer>
         {popup === true ? (
           <Insert popup={popup} popupOn={popupOn}></Insert>
         ) : null}
